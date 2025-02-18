@@ -94,10 +94,14 @@ class cam_face_recognition:
                 face_encodings = face_recognition.face_encodings(rgb_roi)
                 if face_encodings:
                     result_recognition_result = self.recognize_face(roi)
-                    #print(result_recognition_result[0])
-                    self.display_person_info(frame, result_recognition_result)
-                    cv2.imshow("Webcam", frame)
-                    cv2.waitKey(4000)
+                    if result_recognition_result is not None:
+                        self.display_person_info(frame, result_recognition_result)
+                    else:
+                        analysis = self.analyze_face(roi)
+                        if analysis:
+                            self.display_unknown_person_info(frame, analysis)
+                        else:
+                            print("Análise de face falhou.")
                 else:
                     print("Nenhuma face detectada.")
 
